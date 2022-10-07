@@ -1,0 +1,9 @@
+.postWithComments {
+    height: 600px;
+    width: 500px;
+    overflow-y: scroll;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    padding: 20px;
+}

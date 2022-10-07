@@ -1,0 +1,11 @@
+.postsContainer {
+    width: 600px;
+    height: 600px;
+    margin: 50px auto;
+    border: 1px solid black;
+}
+
+.postsWrapper {
+    height: 500px;
+    overflow-y: scroll;
+}
