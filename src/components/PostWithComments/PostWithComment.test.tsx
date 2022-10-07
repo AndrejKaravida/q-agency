@@ -1,6 +1,6 @@
 import axios from "axios";
 import { IComment } from "../../models/Comment";
-import { PostWithComments } from "./PostWithComments";
+import PostWithComments from "./PostWithComments";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 

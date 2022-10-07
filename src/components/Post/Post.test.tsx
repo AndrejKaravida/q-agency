@@ -1,24 +1,21 @@
-import { IPost } from "../../models/Post";
-import axios from "axios";
-import { Post } from "./Post";
+import Post from "./Post";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
+import { IPostWithUsername } from "../../models/PostWithUsername";
 
 describe("Post", () => {
-  beforeEach(() => {
-    const post: IPost = {
-      userId: "username-1",
-      body: "body-1",
-      title: "title-1",
-      id: "id-1",
-    };
-    axios.get = jest.fn().mockResolvedValue({ data: post });
-  });
+  const post: IPostWithUsername = {
+    userId: 1,
+    body: "body-1",
+    title: "title-1",
+    id: 1,
+    username: "username-test",
+  };
 
   it("renders username, title and post body", async () => {
     render(
       <MemoryRouter>
-        <Post postId={"1"} />
+        <Post post={post} />
       </MemoryRouter>
     );
 
@@ -34,7 +31,7 @@ describe("Post", () => {
   it("wraps post with appropriate styling", async () => {
     render(
       <MemoryRouter>
-        <Post postId={"1"} />
+        <Post post={post} />
       </MemoryRouter>
     );
 
@@ -46,7 +43,7 @@ describe("Post", () => {
   it("navigates on post with comments page if post clicked", async () => {
     render(
       <MemoryRouter>
-        <Post postId={"1"} />
+        <Post post={post} />
       </MemoryRouter>
     );
 

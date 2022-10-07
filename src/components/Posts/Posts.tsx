@@ -1,33 +1,54 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { IPost } from "../../models/Post";
-import { Post } from "../Post/Post";
+import Post from "../Post/Post";
 import styles from "./Posts.module.css";
-import withConsolePrinting from "../hocs/withConsolePrinting";
+import { IUser } from "../../models/User";
+import { IPostWithUsername } from "../../models/PostWithUsername";
+import { withMessage, WithMessageProps } from "../../hocs/withDefaultMessage";
 
-export const Posts = () => {
-  const [posts, setPosts] = useState<IPost[]>([]);
+const Posts = ({ message }: WithMessageProps) => {
+  const [postsWithUsername, setPostsWithUsername] = useState<
+    IPostWithUsername[]
+  >([]);
   const [searchInput, setSearchInput] = useState("");
 
-  // const PostWithLogger = withConsolePrinting(Post);
+  useEffect(() => {
+    const fetchUsersAndPosts = async () => {
+      const usersResponse = await axios.get(
+        "https://jsonplaceholder.typicode.com/users"
+      );
+      if (usersResponse.data) {
+        const postsResponse = await axios.get(
+          "https://jsonplaceholder.typicode.com/posts"
+        );
+        const postsWithUsernames = postsResponse.data.map((post: IPost) => {
+          const username =
+            usersResponse.data.find((user: IUser) => user.id === post.userId)
+              .username ?? "";
+
+          return {
+            ...post,
+            username,
+          };
+        });
+        setPostsWithUsername(postsWithUsernames);
+      }
+    };
+    fetchUsersAndPosts();
+  }, []);
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      const response = await axios.get(
-        "https://jsonplaceholder.typicode.com/posts"
-      );
-      setPosts(response.data);
-    };
-    fetchPosts();
+    console.log(`${message} ${Posts.name} `);
   }, []);
 
   const filterPosts = () => {
     if (searchInput) {
-      return posts.filter(
-        (post) => post.userId.toString() === searchInput.toString()
+      return postsWithUsername.filter((post) =>
+        post.username.toLowerCase().includes(searchInput.toLowerCase())
       );
     }
-    return posts;
+    return postsWithUsername;
   };
 
   return (
@@ -43,9 +64,11 @@ export const Posts = () => {
       </div>
       <div className={styles.postsWrapper}>
         {filterPosts().map((post) => (
-          <Post postId={post.id} key={post.id} />
+          <Post post={post} key={post.id} />
         ))}
       </div>
     </div>
   );
 };
+
+export default withMessage(Posts);

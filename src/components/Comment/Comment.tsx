@@ -1,11 +1,17 @@
 import { IComment } from "../../models/Comment";
 import styles from "./Comment.module.css";
+import { withMessage, WithMessageProps } from "../../hocs/withDefaultMessage";
+import { useEffect } from "react";
 
-interface IProps {
+interface IProps extends WithMessageProps {
   comment: IComment;
 }
 
-export const Comment = ({ comment }: IProps) => {
+const Comment = ({ comment, message }: IProps) => {
+  useEffect(() => {
+    console.log(`${message} ${Comment.name} `);
+  }, []);
+
   return (
     <div className={styles.comment} data-testid={"comment"}>
       <p>
@@ -24,3 +30,5 @@ export const Comment = ({ comment }: IProps) => {
     </div>
   );
 };
+
+export default withMessage(Comment);

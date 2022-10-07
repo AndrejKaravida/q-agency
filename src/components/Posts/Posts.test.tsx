@@ -1,5 +1,5 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
-import { Posts } from "./Posts";
+import Posts from "./Posts";
 import { IPost } from "../../models/Post";
 import axios from "axios";
 import { MemoryRouter } from "react-router-dom";
@@ -7,9 +7,9 @@ import { MemoryRouter } from "react-router-dom";
 describe("Posts", () => {
   beforeEach(() => {
     const posts: IPost[] = [
-      { userId: "1", body: "body-1", title: "title-1", id: "id-1" },
-      { userId: "2", body: "body-2", title: "title-2", id: "id-2" },
-      { userId: "2", body: "body-3", title: "title-3", id: "id-3" },
+      { userId: 1, body: "body-1", title: "title-1", id: 11 },
+      { userId: 2, body: "body-2", title: "title-2", id: 22 },
+      { userId: 2, body: "body-3", title: "title-3", id: 33 },
     ];
 
     axios.get = jest.fn().mockResolvedValue({ data: posts });

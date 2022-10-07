@@ -1,16 +1,21 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { homeRoute } from "../../routes";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { IComment } from "../../models/Comment";
-import { Comment } from "../Comment/Comment";
+import Comment from "../Comment/Comment";
 import styles from "./PostWithComment.module.css";
+import { postsRoute } from "../../routes";
+import { withMessage, WithMessageProps } from "../../hocs/withDefaultMessage";
 
-export const PostWithComments = () => {
+const PostWithComments = ({ message }: WithMessageProps) => {
   const navigate = useNavigate();
   const [comments, setComments] = useState<IComment[]>([]);
 
   let { id } = useParams();
+
+  useEffect(() => {
+    console.log(`${message} ${PostWithComments.name} `);
+  }, []);
 
   useEffect(() => {
     try {
@@ -37,7 +42,9 @@ export const PostWithComments = () => {
           <Comment key={comment.id} comment={comment} />
         ))}
       </div>
-      <button onClick={() => navigate(homeRoute)}>HOME</button>
+      <button onClick={() => navigate(postsRoute)}>HOME</button>
     </>
   );
 };
+
+export default withMessage(PostWithComments);

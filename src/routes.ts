@@ -1,2 +1,3 @@
-export const homeRoute = "/";
-export const postWithCommentsRoute = "/post/:id";
+export const baseRoute = "/";
+export const postsRoute = "/posts";
+export const postRoute = "/post/:id";

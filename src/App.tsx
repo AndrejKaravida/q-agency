@@ -1,19 +1,16 @@
-import { Posts } from "./components/Posts/Posts";
-import withConsolePrinting from "./components/hocs/withConsolePrinting";
+import Posts from "./components/Posts/Posts";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { homeRoute, postWithCommentsRoute } from "./routes";
-import { PostWithComments } from "./components/PostWithComments/PostWithComments";
+import { postRoute, postsRoute } from "./routes";
+import PostWithComments from "./components/PostWithComments/PostWithComments";
 import "./App.css";
 
 function App() {
-  const PostsWithLogger = withConsolePrinting(Posts);
-
   return (
     <div className="App">
       <Router>
         <Routes>
-          <Route path={homeRoute} element={<PostsWithLogger />} />
-          <Route path={postWithCommentsRoute} element={<PostWithComments />} />
+          <Route path={postsRoute} element={<Posts />} />
+          <Route path={postRoute} element={<PostWithComments />} />
         </Routes>
       </Router>
     </div>
