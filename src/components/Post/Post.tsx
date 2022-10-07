@@ -23,9 +23,15 @@ const Post = ({ post, message }: IPostProps) => {
       onClick={() => navigate(`/post/${post.id}`)}
       data-testid={"post"}
     >
-      <h4>Username: {post.username}</h4>
-      <p>Title: {post.title}</p>
-      <p>Body: {post.body}</p>
+      <p>
+        <b>Username:</b> {post.username}
+      </p>
+      <p>
+        <b>Title:</b> {post.title}
+      </p>
+      <p>
+        <b>Body:</b> {post.body}
+      </p>
     </div>
   );
 };
