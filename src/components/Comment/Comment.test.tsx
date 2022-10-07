@@ -2,14 +2,14 @@ import Comment from "./Comment";
 import { render, screen } from "@testing-library/react";
 
 describe("Comment", () => {
+  const singleComment = {
+    email: "testuser@user.com",
+    name: "comment-title",
+    body: "comment-body",
+    postId: 1,
+    id: 1,
+  };
   it("displays user email, title and body", () => {
-    const singleComment = {
-      email: "testuser@user.com",
-      name: "comment-title",
-      body: "comment-body",
-      postId: 1,
-      id: 1,
-    };
     render(<Comment comment={singleComment} />);
 
     const user = screen.getByText(singleComment.email);
@@ -22,13 +22,6 @@ describe("Comment", () => {
   });
 
   it("displays comment wrapper with appropriate styling", () => {
-    const singleComment = {
-      email: "testuser@user.com",
-      name: "comment-title",
-      body: "comment-body",
-      postId: 1,
-      id: 1,
-    };
     render(<Comment comment={singleComment} />);
 
     const comment = screen.getByTestId("comment");

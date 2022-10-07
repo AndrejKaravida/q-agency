@@ -1,7 +1,7 @@
 import axios from "axios";
 import { IComment } from "../../models/Comment";
 import PostWithComments from "./PostWithComments";
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 
 describe("PostWithComment", () => {
@@ -39,10 +39,10 @@ describe("PostWithComment", () => {
         <PostWithComments />
       </MemoryRouter>
     );
-
-    const headline = await screen.findByText("Comments:");
-
-    expect(headline).toBeInTheDocument();
+    await act(async () => {
+      const headline = await screen.findByText("Comments:");
+      expect(headline).toBeInTheDocument();
+    });
   });
 
   it("renders home button", async () => {
@@ -51,8 +51,10 @@ describe("PostWithComment", () => {
         <PostWithComments />
       </MemoryRouter>
     );
-    const homeButton = await screen.findByRole("button", { name: "HOME" });
-    expect(homeButton).toBeInTheDocument();
+    await act(async () => {
+      const homeButton = await screen.findByRole("button", { name: "HOME" });
+      expect(homeButton).toBeInTheDocument();
+    });
   });
 
   it("initially renders all available comments", async () => {

@@ -1,5 +1,5 @@
 import Post from "./Post";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { IPostWithUsername } from "../../models/PostWithUsername";
 
@@ -19,9 +19,9 @@ describe("Post", () => {
       </MemoryRouter>
     );
 
-    const title = await screen.findByText("title-1", { exact: false });
-    const username = await screen.findByText("username-1", { exact: false });
-    const body = await screen.findByText("body-1", { exact: false });
+    const title = await screen.findByText(post.title, { exact: false });
+    const username = await screen.findByText(post.username, { exact: false });
+    const body = await screen.findByText(post.body, { exact: false });
 
     expect(title).toBeInTheDocument();
     expect(username).toBeInTheDocument();
@@ -38,25 +38,5 @@ describe("Post", () => {
     const postWrapper = await screen.findByTestId("post");
 
     expect(postWrapper).toHaveClass("postWrapper");
-  });
-
-  it("navigates on post with comments page if post clicked", async () => {
-    render(
-      <MemoryRouter>
-        <Post post={post} />
-      </MemoryRouter>
-    );
-
-    const postWrapper = await screen.findByTestId("post");
-
-    fireEvent.click(postWrapper);
-
-    const postWithComments = await screen.findByTestId("post-with-comments");
-
-    await new Promise((resolve) => setTimeout(resolve, 100));
-
-    await waitFor(() => {
-      expect(postWithComments).toBeInTheDocument();
-    });
   });
 });

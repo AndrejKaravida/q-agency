@@ -1,18 +1,19 @@
 import Posts from "./components/Posts/Posts";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { postRoute, postsRoute } from "./routes";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { baseRoute, postRoute, postsRoute } from "./routes";
 import PostWithComments from "./components/PostWithComments/PostWithComments";
 import "./App.css";
 
 function App() {
   return (
     <div className="App">
-      <Router>
+      <BrowserRouter>
         <Routes>
+          <Route path={baseRoute} element={<Navigate to={postsRoute} />} />
           <Route path={postsRoute} element={<Posts />} />
           <Route path={postRoute} element={<PostWithComments />} />
         </Routes>
-      </Router>
+      </BrowserRouter>
     </div>
   );
 }

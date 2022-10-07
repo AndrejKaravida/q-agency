@@ -6,6 +6,7 @@ import Comment from "../Comment/Comment";
 import styles from "./PostWithComment.module.css";
 import { postsRoute } from "../../routes";
 import { withMessage, WithMessageProps } from "../../hocs/withDefaultMessage";
+import { commentsUrl } from "../utils/api-urls";
 
 const PostWithComments = ({ message }: WithMessageProps) => {
   const navigate = useNavigate();
@@ -18,17 +19,11 @@ const PostWithComments = ({ message }: WithMessageProps) => {
   }, []);
 
   useEffect(() => {
-    try {
-      axios
-        .get(`https://jsonplaceholder.typicode.com/comments?postId=${id}`)
-        .then((response) => {
-          if (response.data) {
-            setComments(response.data);
-          }
-        });
-    } catch (e) {
-      console.error(e);
-    }
+    const fetchComments = async () => {
+      const commentsResponse = await axios.get(`${commentsUrl}${id}`);
+      setComments(commentsResponse.data);
+    };
+    fetchComments();
   }, [id]);
 
   return (

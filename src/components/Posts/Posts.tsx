@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { IPost } from "../../models/Post";
 import Post from "../Post/Post";
 import styles from "./Posts.module.css";
 import { IUser } from "../../models/User";
 import { IPostWithUsername } from "../../models/PostWithUsername";
 import { withMessage, WithMessageProps } from "../../hocs/withDefaultMessage";
+import axios from "axios";
+import { postsUrl, usersUrl } from "../utils/api-urls";
 
 const Posts = ({ message }: WithMessageProps) => {
   const [postsWithUsername, setPostsWithUsername] = useState<
@@ -15,28 +16,32 @@ const Posts = ({ message }: WithMessageProps) => {
 
   useEffect(() => {
     const fetchUsersAndPosts = async () => {
-      const usersResponse = await axios.get(
-        "https://jsonplaceholder.typicode.com/users"
+      const usersResponse = await axios.get(usersUrl);
+      const postsResponse = await axios.get(postsUrl);
+      const postsWithUsernames = addUsernameToPosts(
+        postsResponse.data,
+        usersResponse.data
       );
-      if (usersResponse.data) {
-        const postsResponse = await axios.get(
-          "https://jsonplaceholder.typicode.com/posts"
-        );
-        const postsWithUsernames = postsResponse.data.map((post: IPost) => {
-          const username =
-            usersResponse.data.find((user: IUser) => user.id === post.userId)
-              .username ?? "";
 
-          return {
-            ...post,
-            username,
-          };
-        });
-        setPostsWithUsername(postsWithUsernames);
-      }
+      setPostsWithUsername(postsWithUsernames);
     };
     fetchUsersAndPosts();
   }, []);
+
+  const addUsernameToPosts = (
+    posts: IPost[],
+    users: IUser[]
+  ): IPostWithUsername[] => {
+    return posts.map((post: IPost) => {
+      const username =
+        users.find((user: IUser) => user.id === post.userId)?.username ?? "";
+
+      return {
+        ...post,
+        username,
+      };
+    });
+  };
 
   useEffect(() => {
     console.log(`${message} ${Posts.name} `);
